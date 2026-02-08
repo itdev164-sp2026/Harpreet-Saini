@@ -1,127 +1,140 @@
 import * as React from "react"
-import { Link } from "gatsby"
-import { StaticImage } from "gatsby-plugin-image"
-
+import { Link, graphql } from "gatsby"
 import Layout from "../components/layout"
 import Seo from "../components/seo"
-import * as styles from "../components/index.module.css"
 
-const links = [
-  {
-    text: "Tutorial",
-    url: "https://www.gatsbyjs.com/docs/tutorial",
-    description:
-      "A great place to get started if you're new to web development. Designed to guide you through setting up your first Gatsby site.",
-  },
-  {
-    text: "Examples",
-    url: "https://github.com/gatsbyjs/gatsby/tree/master/examples",
-    description:
-      "A collection of websites ranging from very basic to complex/complete that illustrate how to accomplish specific tasks within your Gatsby sites.",
-  },
-  {
-    text: "Plugin Library",
-    url: "https://www.gatsbyjs.com/plugins",
-    description:
-      "Learn how to add functionality and customize your Gatsby site or app with thousands of plugins built by our amazing developer community.",
-  },
-  {
-    text: "Build and Host",
-    url: "https://www.gatsbyjs.com/cloud",
-    description:
-      "Now you’re ready to show the world! Give your Gatsby site superpowers: Build and host on Netlify. Get started for free!",
-  },
-]
+const IndexPage = ({ data }) => {
+  const posts = data.allContentfulBlogPost.nodes
 
-const samplePageLinks = [
-  {
-    text: "Page 2",
-    url: "page-2",
-    badge: false,
-    description:
-      "A simple example of linking to another page within a Gatsby site",
-  },
-  { text: "TypeScript", url: "using-typescript" },
-  { text: "Server Side Rendering", url: "using-ssr" },
-  { text: "Deferred Static Generation", url: "using-dsg" },
-]
+  return (
+    <Layout>
+      <Seo title="Home" />
+      <h1 style={{ color: '#1E4D2B' }}>Harpreet Saini's ITDEV-164 Blog</h1>
+      <p style={{ fontSize: '1.1rem' }}>Milwaukee Area Technical College - Web Development Course</p>
+      
+      <h2 style={{ borderBottom: '2px solid #1E4D2B', paddingBottom: '0.5rem', marginTop: '2rem' }}>
+        My Contentful Blog Posts
+      </h2>
+      
+      {posts.length > 0 ? (
+        <div style={{ marginTop: '2rem' }}>
+          {posts.map((post) => (
+            <div 
+              key={post.id} 
+              style={{ 
+                marginBottom: '2rem', 
+                padding: '1.5rem', 
+                border: '1px solid #ddd', 
+                borderRadius: '8px',
+                backgroundColor: '#f9f9f9'
+              }}
+            >
+              <Link 
+                to={`/blog/${post.slug}/`} 
+                style={{ 
+                  textDecoration: 'none',
+                  color: '#1E4D2B'
+                }}
+              >
+                <h3 style={{ marginBottom: '0.5rem', fontSize: '1.5rem' }}>
+                  {post.title}
+                </h3>
+              </Link>
+              
+              {post.description && (
+                <p style={{ 
+                  color: '#555', 
+                  marginBottom: '0.5rem',
+                  lineHeight: '1.4'
+                }}>
+                  {post.description.description}
+                </p>
+              )}
+              
+              <div style={{ 
+                display: 'flex', 
+                justifyContent: 'space-between',
+                color: '#777',
+                fontSize: '0.9rem',
+                marginTop: '1rem'
+              }}>
+                {post.category && (
+                  <span>
+                    <strong>Category:</strong> {post.category}
+                  </span>
+                )}
+                {post.publishDate && (
+                  <span>
+                    <strong>Published:</strong> {post.publishDate}
+                  </span>
+                )}
+              </div>
+              
+              <div style={{ marginTop: '1rem' }}>
+                <Link 
+                  to={`/blog/${post.slug}/`}
+                  style={{
+                    color: '#fff',
+                    backgroundColor: '#1E4D2B',
+                    padding: '0.5rem 1rem',
+                    borderRadius: '4px',
+                    textDecoration: 'none',
+                    display: 'inline-block'
+                  }}
+                >
+                  Read Full Post →
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div style={{ 
+          padding: '2rem', 
+          backgroundColor: '#fff3cd', 
+          border: '1px solid #ffeaa7',
+          borderRadius: '5px',
+          marginTop: '2rem'
+        }}>
+          <p style={{ margin: 0 }}>
+            <strong>No blog posts found.</strong> Please add blog posts in Contentful.
+          </p>
+        </div>
+      )}
+      
+      <div style={{ marginTop: '3rem', padding: '1.5rem', backgroundColor: '#f0f7f0', borderRadius: '5px' }}>
+        <h3>About This Project</h3>
+        <p>This is my project for ITDEV-164 Web Development at MATC, demonstrating:</p>
+        <ul>
+          <li>✅ Gatsby static site generation</li>
+          <li>✅ Contentful CMS integration</li>
+          <li>✅ GraphQL data querying</li>
+          <li>✅ React components</li>
+          <li>✅ Dynamic page creation from Contentful</li>
+        </ul>
+        <p><strong>Contentful Status:</strong> Connected with {posts.length} blog post(s)</p>
+      </div>
+    </Layout>
+  )
+}
 
-const moreLinks = [
-  {
-    text: "Documentation",
-    url: "https://gatsbyjs.com/docs/",
-  },
-  {
-    text: "Starters",
-    url: "https://gatsbyjs.com/starters/",
-  },
-  {
-    text: "Showcase",
-    url: "https://gatsbyjs.com/showcase/",
-  },
-  {
-    text: "Contributing",
-    url: "https://www.gatsbyjs.com/contributing/",
-  },
-  { text: "Issues", url: "https://github.com/gatsbyjs/gatsby/issues" },
-]
+export const query = graphql`
+  query {
+    allContentfulBlogPost(sort: {publishDate: DESC}) {
+      nodes {
+        id
+        title
+        slug
+        category
+        description {
+          description
+        }
+        publishDate(formatString: "MMMM DD, YYYY")
+      }
+    }
+  }
+`
 
-const utmParameters = `?utm_source=starter&utm_medium=start-page&utm_campaign=default-starter`
-
-const IndexPage = () => (
-  <Layout>
-    <div className={styles.textCenter}>
-      <StaticImage
-        src="../images/example.png"
-        loading="eager"
-        width={64}
-        quality={95}
-        formats={["auto", "webp", "avif"]}
-        alt=""
-        style={{ marginBottom: `var(--space-3)` }}
-      />
-      <h1>
-        Welcome to <b>Gatsby!</b>
-      </h1>
-      <p className={styles.intro}>
-        <b>Example pages:</b>{" "}
-        {samplePageLinks.map((link, i) => (
-          <React.Fragment key={link.url}>
-            <Link to={link.url}>{link.text}</Link>
-            {i !== samplePageLinks.length - 1 && <> · </>}
-          </React.Fragment>
-        ))}
-        <br />
-        Edit <code>src/pages/index.js</code> to update this page.
-      </p>
-    </div>
-    <ul className={styles.list}>
-      {links.map(link => (
-        <li key={link.url} className={styles.listItem}>
-          <a
-            className={styles.listItemLink}
-            href={`${link.url}${utmParameters}`}
-          >
-            {link.text} ↗
-          </a>
-          <p className={styles.listItemDescription}>{link.description}</p>
-        </li>
-      ))}
-    </ul>
-    {moreLinks.map((link, i) => (
-      <React.Fragment key={link.url}>
-        <a href={`${link.url}${utmParameters}`}>{link.text}</a>
-        {i !== moreLinks.length - 1 && <> · </>}
-      </React.Fragment>
-    ))}
-  </Layout>
-)
-
-/**
- * Head export to define metadata for the page
- *
- * See: https://www.gatsbyjs.com/docs/reference/built-in-components/gatsby-head/
- */
 export const Head = () => <Seo title="Home" />
 
 export default IndexPage
