@@ -4,6 +4,11 @@
  * See: https://www.gatsbyjs.com/docs/reference/config-files/gatsby-config/
  */
 
+// ADD THIS AT THE VERY TOP
+require("dotenv").config({
+  path: `.env.${process.env.NODE_ENV}`,
+})
+
 /**
  * @type {import('gatsby').GatsbyConfig}
  */
@@ -20,6 +25,18 @@ module.exports = {
     }
   },
   plugins: [
+    // ===== ADD CONTENTFUL PLUGIN HERE (at the beginning) =====
+    {
+      resolve: `gatsby-source-contentful`,
+      options: {
+        spaceId: process.env.CONTENTFUL_SPACE_ID,
+        accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
+      },
+    },
+    // ===== ADD MARKDOWN SUPPORT HERE =====
+    `gatsby-transformer-remark`,
+    
+    // ===== YOUR EXISTING PLUGINS =====
     `gatsby-plugin-image`,
     {
       resolve: `gatsby-source-filesystem`,
