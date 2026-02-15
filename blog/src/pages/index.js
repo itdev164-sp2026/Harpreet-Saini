@@ -1,5 +1,6 @@
 import * as React from "react"
 import { Link, graphql } from "gatsby"
+import { GatsbyImage } from "gatsby-plugin-image"
 import Layout from "../components/layout"
 import Seo from "../components/seo"
 
@@ -16,24 +17,34 @@ const IndexPage = ({ data }) => {
         console.log("Post:", post)
         
         return (
-          <article key={post.slug} style={{ marginBottom: '2rem' }}>
+          <article key={post.slug} style={{ marginBottom: '2rem', borderBottom: '1px solid #ccc', paddingBottom: '1rem' }}>
             <h2>
               <Link to={`/blog/${post.slug}`}>
                 {post.title}
               </Link>
             </h2>
             
+            {/* Display hero image if it exists */}
+            {post.heroImage && (
+              <GatsbyImage
+                image={post.heroImage.gatsbyImageData}
+                alt={post.title}
+                style={{ marginBottom: '1rem' }}
+              />
+            )}
+            
             {/* Display description if it exists */}
             {post.description && (
-              <p>{post.description.description}</p>
+              <p><strong>Description:</strong> {post.description.description}</p>
             )}
             
             {/* Display excerpt if it exists */}
             {post.body?.childMarkdownRemark?.excerpt && (
-              <p>{post.body.childMarkdownRemark.excerpt}</p>
+              <div>
+                <p>{post.body.childMarkdownRemark.excerpt}</p>
+                <Link to={`/blog/${post.slug}`}>Read more →</Link>
+              </div>
             )}
-            
-            <hr />
           </article>
         )
       })}
@@ -46,14 +57,11 @@ const IndexPage = ({ data }) => {
   )
 }
 
-// FIXED QUERY - removed the image fields that don't exist
+// CORRECTED QUERY - NO extra braces, using nodes instead of edges
 export const query = graphql`
   query {
- {
-  allContentfulBlogPost {
-    edges {
-      node {
-        id
+    allContentfulBlogPost {
+      nodes {
         title
         slug
         heroImage {
@@ -63,15 +71,17 @@ export const query = graphql`
             width: 300
           )
         }
+        description {
+          description
+        }
         body {
           childMarkdownRemark {
-            excerpt
+            excerpt(pruneLength: 200)
           }
         }
       }
     }
   }
-} 
 `
 
 export const Head = () => <Seo title="Home" />
