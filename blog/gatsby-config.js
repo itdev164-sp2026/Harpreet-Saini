@@ -4,6 +4,11 @@
  * See: https://www.gatsbyjs.com/docs/reference/config-files/gatsby-config/
  */
 
+// Load environment variables at the VERY TOP
+require("dotenv").config({
+  path: `.env.${process.env.NODE_ENV}`,
+})
+
 /**
  * @type {import('gatsby').GatsbyConfig}
  */
@@ -20,12 +25,12 @@ module.exports = {
     }
   },
   plugins: [
-    // ========== CONTENTFUL PLUGIN ADDED HERE ==========
+    // ========== CONTENTFUL PLUGIN WITH SECURE ENV VARIABLES ==========
     {
       resolve: `gatsby-source-contentful`,
       options: {
-        spaceId: `ik1ts586crb4`,
-        accessToken: `W7hoVSFo5LRPYfbYbjt8pinhz_nGsF_XQjy8Xrac5ak`,
+        spaceId: process.env.CONTENTFUL_SPACE_ID,
+        accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
       },
     },
     // ========== YOUR EXISTING PLUGINS ==========
