@@ -25,7 +25,7 @@ module.exports = {
     }
   },
   plugins: [
-    // ===== ADD CONTENTFUL PLUGIN HERE (at the beginning) =====
+    // ===== CONTENTFUL PLUGIN =====
     {
       resolve: `gatsby-source-contentful`,
       options: {
@@ -33,7 +33,7 @@ module.exports = {
         accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
       },
     },
-    // ===== ADD MARKDOWN SUPPORT HERE =====
+    // ===== MARKDOWN SUPPORT =====
     `gatsby-transformer-remark`,
     
     // ===== YOUR EXISTING PLUGINS =====

@@ -1,6 +1,5 @@
 import * as React from "react"
 import { Link, graphql } from "gatsby"
-import { GatsbyImage } from "gatsby-plugin-image"
 import Layout from "../components/layout"
 import Seo from "../components/seo"
 
@@ -23,28 +22,6 @@ const IndexPage = ({ data }) => {
                 {post.title}
               </Link>
             </h2>
-            
-            {/* Check for different possible image field names */}
-            {post.heroImage && (
-              <GatsbyImage
-                image={post.heroImage.gatsbyImageData}
-                alt={post.title}
-              />
-            )}
-            
-            {post.image && (
-              <GatsbyImage
-                image={post.image.gatsbyImageData}
-                alt={post.title}
-              />
-            )}
-            
-            {post.featuredImage && (
-              <GatsbyImage
-                image={post.featuredImage.gatsbyImageData}
-                alt={post.title}
-              />
-            )}
             
             {/* Display description if it exists */}
             {post.description && (
@@ -69,14 +46,16 @@ const IndexPage = ({ data }) => {
   )
 }
 
-// GraphQL query to fetch blog posts
+// FIXED QUERY - removed the image fields that don't exist
 export const query = graphql`
   query {
-    allContentfulBlogPost {
-      nodes {
+ {
+  allContentfulBlogPost {
+    edges {
+      node {
+        id
         title
         slug
-        # Try different possible image field names
         heroImage {
           gatsbyImageData(
             layout: CONSTRAINED
@@ -84,36 +63,17 @@ export const query = graphql`
             width: 300
           )
         }
-        image {
-          gatsbyImageData(
-            layout: CONSTRAINED
-            placeholder: BLURRED
-            width: 300
-          )
-        }
-        featuredImage {
-          gatsbyImageData(
-            layout: CONSTRAINED
-            placeholder: BLURRED
-            width: 300
-          )
-        }
-        description {
-          description
-        }
         body {
           childMarkdownRemark {
-            excerpt(pruneLength: 200)
+            excerpt
           }
         }
       }
     }
   }
+} 
 `
 
-/**
- * Head export to define metadata for the page
- */
 export const Head = () => <Seo title="Home" />
 
 export default IndexPage
