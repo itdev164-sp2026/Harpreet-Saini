@@ -2,29 +2,35 @@ import * as React from "react"
 import { Link } from "gatsby"
 import styled from "styled-components"
 
-// Create styled components
 const StyledHeader = styled.header`
-  background: rebeccapurple;
+  background: ${props => props.theme.header.background};
   margin-bottom: 1.45rem;
+`
+
+const StyledDiv = styled.div`
   margin: 0 auto;
-  padding: var(--space-4) var(--size-gutter);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  max-width: 960px;
+  padding: 1.45rem 1.0875rem;
+`
+
+const StyledHeading = styled.h1`
+  margin: 0;
 `
 
 const StyledLink = styled(Link)`
-  font-size: var(--font-sm);
+  color: ${props => props.theme.header.fontColor};
   text-decoration: none;
-  color: white;
 `
 
 const Header = ({ siteTitle }) => (
   <StyledHeader>
-    <StyledLink to="/">
-      {siteTitle}
-    </StyledLink>
-    {/* Image removed as per instructions */}
+    <StyledDiv>
+      <StyledHeading>
+        <StyledLink to="/">
+          {siteTitle}
+        </StyledLink>
+      </StyledHeading>
+    </StyledDiv>
   </StyledHeader>
 )
 
