@@ -1,0 +1,7 @@
+
+echo "" >> .gitignore
+echo "# testing" >> .gitignore
+echo "/test-results" >> .gitignore
+echo "/playwright-report" >> .gitignore
+echo "/playwright/.cache/" >> .gitignore
+
