@@ -5,3 +5,8 @@ echo "/test-results" >> .gitignore
 echo "/playwright-report" >> .gitignore
 echo "/playwright/.cache/" >> .gitignore
 
+node_modules/
+.next/
+test-results/
+playwright-report/
+.DS_Store
