@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { createProject } from "@/lib/supabase/actions";
+import { createProject } from "@/app/actions";
 import { projectSchema } from "@/lib/schemas";
 import { Button } from "@/components/ui/button";
 import {
