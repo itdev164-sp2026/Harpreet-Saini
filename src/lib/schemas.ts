@@ -1,9 +1,8 @@
-import { z } from "zod";
+import { z } from 'zod'
 
-export const ProjectSchema = z.object({
-  title: z.string().min(3, { message: "Title must be at least 3 characters" }),
-  description: z.string().min(10, { message: "Description must be at least 10 characters" }),
-  status: z.enum(["active", "completed", "archived"]),
-});
+export const projectSchema = z.object({
+  name: z.string().min(1, 'Project name is required'),
+  description: z.string().optional(),
+})
 
-export type Project = z.infer<typeof ProjectSchema>;
+export type ProjectFormData = z.infer<typeof projectSchema>

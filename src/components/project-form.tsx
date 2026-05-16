@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -45,15 +45,15 @@ export function ProjectForm() {
     try {
       const formData = new FormData();
       formData.append("name", data.name);
-      formData.append("description", data.description || "");
+      if (data.description) {
+        formData.append("description", data.description);
+      }
       
-      const response = await createProject(formData);
+      const result = await createProject(formData);
       
-      // Check if response has an error property
-      if (response && 'error' in response && response.error) {
-        toast.error(response.error);
+      if (result && 'error' in result) {
+        toast.error(result.error);
       } else {
-        // Success - redirect happens in Server Action
         toast.success("Project created successfully!");
       }
     } catch (error) {
